@@ -16,11 +16,10 @@ module.exports = {
   query: async (text, params) => pool.query(text, params),
   GET_ALL_USERS: 'SELECT * FROM users',
   ADD_USER: `
-  INSERT INTO users (name, email, password)
+  INSERT INTO users (username, email, password)
   VALUES ($1, $2, $3)
   `,
-  GET_BY_EMAIL: `SELECT * FROM users WHERE email = $1`,
   DELETE_USER: `DELETE FROM users WHERE id = $1`,
   FIND_USER_BY_EMAIL: `SELECT * FROM users WHERE email = $1`,
-  FIND_USER_BY_NAME: `SELECT * FROM users WHERE name = $1`
+  FIND_USER_BY_USERNAME: `SELECT * FROM users WHERE username = $1`
 }
