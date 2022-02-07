@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
+const cors = require('cors');
 const actions = require('./src/actions');
 const { sendMail } = require('./src/mailer');
 const { passwordGenerator } = require('./src/helpers');
@@ -9,6 +10,7 @@ const PORT = process.env.PORT || 5050;
 const secret = process.env.JWT_SECRET;
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 app.get('/users', async (req, res) => {
   const users = await actions.getAllUsers()
