@@ -2,6 +2,7 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const actions = require('./src/actions');
+const { sendMail } = require('./src/mailer');
 
 const PORT = process.env.PORT || 5050;
 const secret = process.env.JWT_SECRET;
@@ -67,27 +68,45 @@ app.post('/users/:id/change', async (req, res) => {
   try {
     const { id } = req.params;
     const { oldPassword, password, confirmPassword } = req.body;
-    if (password !== confirmPassword) {
-      return res.status(401).json({message: 'passwords does not match'})
-    }
     if (!oldPassword || !password || !confirmPassword) {
       return res.status(400).json({message: 'please provide all requested information'});
     }
+    if (password !== confirmPassword) {
+      return res.status(401).json({message: 'passwords does not match'})
+    }
     const user = await actions.findById(id);
     const oldPasswordCheck = await bcrypt.compare(password, user.password);
-    if (oldPasswordCheck) {
-      return res.status(400).json({message: 'old password can not be the same with the new one'});
-    }
     const passwordCheck = await bcrypt.compare(oldPassword, user.password);
     if (!passwordCheck) {
       return res.status(400).json({message: 'wrong password'})
+    }
+    if (oldPasswordCheck) {
+      return res.status(400).json({message: 'old password can not be the same with the new one'});
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     await actions.changePassword(hashedPassword, id);
     res.status(204).json()
   } catch (error) {
-    res.json({message: error.message})
+    res.status(500).json({message: error.message});
   }
-})
+});
+
+app.post('/users/forgot', async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await actions.findByEmail(email);
+    if (!user) {
+      return res.status(401).json({message: 'no user with this email found'})
+    }
+    const password = Math.random().toString(36).slice(-9);
+    await sendMail(user.email, user.username, password)
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await actions.changePassword(hashedPassword, user.id);
+    console.log(hashedPassword)
+    res.status(204).json()
+  } catch (error) {
+    res.status(500).json({message: error.message});
+  }
+});
 
 app.listen(PORT, () => console.log(`server listening on port ${PORT}`))
