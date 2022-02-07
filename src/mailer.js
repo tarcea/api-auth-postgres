@@ -17,7 +17,7 @@ const sendMail = async (to, username, password) => {
     to: to,
     subject: 'Password change request',
     text: '',
-    html: `<h1>Hi ${username}, your new password is ...</h1><p>${password}</p>`
+    html: `<h1>Hi <em>${username}</em>, your new password is ...</h1><p>${password}</p>`
   });
   // console.log(sendResult)
 };
