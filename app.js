@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const JWT = require('jsonwebtoken');
 const actions = require('./src/actions');
 const { sendMail } = require('./src/mailer');
+const { passwordGenerator } = require('./src/helpers');
 
 const PORT = process.env.PORT || 5050;
 const secret = process.env.JWT_SECRET;
@@ -98,7 +99,7 @@ app.post('/users/forgot', async (req, res) => {
     if (!user) {
       return res.status(401).json({message: 'no user with this email found'})
     }
-    const password = Math.random().toString(36).slice(-9);
+    const password = passwordGenerator(12);
     await sendMail(user.email, user.username, password)
     const hashedPassword = await bcrypt.hash(password, 10);
     await actions.changePassword(hashedPassword, user.id);
