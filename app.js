@@ -31,10 +31,10 @@ app.post('/users/signup', async (req, res) => {
       return res.status(401).json({message: 'passwords does not match'})
     }
     const hashedPassword = await bcrypt.hash(password, 10);
-    // const newUser = {email, username, password: hashedPassword};
     await actions.addUser(username, email, hashedPassword);
+    const user = await actions.findByEmail(email);
     const token = JWT.sign({}, secret, {expiresIn: 3600});
-    res.status(201).json({ token });
+    res.status(201).json({ token, userId: user.id });
   } catch (error) {
     res.json({message: error.message})
   }
