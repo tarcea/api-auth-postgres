@@ -21,5 +21,11 @@ module.exports = {
   `,
   DELETE_USER: `DELETE FROM users WHERE id = $1`,
   FIND_USER_BY_EMAIL: `SELECT * FROM users WHERE email = $1`,
-  FIND_USER_BY_USERNAME: `SELECT * FROM users WHERE username = $1`
+  FIND_USER_BY_USERNAME: `SELECT * FROM users WHERE username = $1`,
+  FIND_USER_BY_ID: `SELECT * FROM users WHERE id = $1`,
+  CHANGE_PASSWORD: `
+    UPDATE users
+    SET password = $1
+    WHERE id = $2
+  `
 }

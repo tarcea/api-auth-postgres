@@ -8,6 +8,10 @@ module.exports = {
   deleteUser: async id => {
     await db.query(db.DELETE_USER, [id]);
   },
+  findById: async id => {
+    const { rows } = await db.query(db.FIND_USER_BY_ID, [id]);
+    return rows[0];
+  },
   findByEmail: async email => {
     const { rows } = await db.query(db.FIND_USER_BY_EMAIL, [email]);
     return rows[0];
@@ -18,5 +22,8 @@ module.exports = {
   },
   addUser: async (username, email, password) => {
     await db.query(db.ADD_USER, [username, email, password]);
+  },
+  changePassword: async (password, id) => {
+    await db.query(db.CHANGE_PASSWORD, [password, id]);
   },
 }
