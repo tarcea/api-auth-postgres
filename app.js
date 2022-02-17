@@ -12,9 +12,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
-// app.get('/users', async (req, res) => {
-//   const users = await actions.getAllUsers()
-//   res.json(users)
+// app.get("/users", async (req, res) => {
+//   const users = await actions.getAllUsers();
+//   res.json(users);
 // });
 
 app.delete("/users/:id", async (req, res) => {
