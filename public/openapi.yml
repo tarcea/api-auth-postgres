@@ -1,0 +1,173 @@
+openapi: "3.0.2"
+info:
+  title: API auth
+  version: "1.0"
+servers:
+  - url: https://auth-gt.herokuapp.com
+paths:
+  /users/signup:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/signupUserInput"
+        required: true
+      responses:
+        "201":
+          description: New user created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signupUserResponse"
+        "400":
+          description: not all input provided
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signupUserError400"
+        "401":
+          description: no matching passwords
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signupUserError401"
+        "500":
+          description: server errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/signupUserError500"
+  /users/login:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/loginUserInput"
+        required: true
+      responses:
+        "201":
+          description: New user created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loginUserResponse"
+        "400":
+          description: not all input provided
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loginUserError400"
+        "401":
+          description: no matching passwords
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loginUserError401"
+        "500":
+          description: server errors
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loginUserError500"
+components:
+  schemas:
+    signupUserInput:
+      type: object
+      properties:
+        email:
+          type: string
+          example: myemail@me.com
+        username:
+          type: string
+          example: George
+        password:
+          type: string
+          example: MySecurePassword@229!1955
+        confirmPassword:
+          type: string
+          example: MySecurePassword@229!1955
+      required:
+        - email
+        - username
+        - password
+        - confirmPassword
+    signupUserResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUxMDM1NjYsImV4cCI6MTY0NTEwNzE2Nn0.dDHKB5MHnU7g2fKZPt5jfJ0hgAacC4shg-CbA7CFUuw
+        username:
+          type: string
+          example: George
+        userId:
+          type: number
+          example: 10
+    signupUserError400:
+      type: object
+      properties:
+        message:
+          type: string
+          example:
+            enum:
+              - please provide all requested information
+              - name or email already exists
+    signupUserError401:
+      type: object
+      properties:
+        message:
+          type: string
+          example: passwords does not match
+    signupUserError500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: some server related error
+    loginUserInput:
+      type: object
+      properties:
+        email:
+          type: string
+          example: myemail@me.com
+        username:
+          type: string
+          example: George
+        password:
+          type: string
+          example: MySecurePassword@229!1955
+      required:
+        - username
+        - password
+    loginUserResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUxMDM1NjYsImV4cCI6MTY0NTEwNzE2Nn0.dDHKB5MHnU7g2fKZPt5jfJ0hgAacC4shg-CbA7CFUuw
+        username:
+          type: string
+          example: George
+        userId:
+          type: number
+          example: 13
+    loginUserError400:
+      type: object
+      properties:
+        message:
+          type: string
+          example: wrong authentication credentials
+    loginUserError401:
+      type: object
+      properties:
+        message:
+          type: string
+          example: wrong authentication credentials
+    loginUserError500:
+      type: object
+      properties:
+        message:
+          type: string
+          example: some server related error
