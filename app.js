@@ -5,6 +5,7 @@ const cors = require("cors");
 const actions = require("./src/actions");
 const { sendMail } = require("./src/mailer");
 const { passwordGenerator } = require("./src/helpers");
+const verifyUser = require("./middlewares");
 
 const PORT = process.env.PORT || 5050;
 const secret = process.env.JWT_SECRET;
@@ -13,14 +14,20 @@ app.use(express.json());
 app.use(express.static("public"));
 app.use(cors());
 
-// app.get("/users", async (req, res) => {
-//   const users = await actions.getAllUsers();
-//   res.json(users);
-// });
+app.get("/users", verifyUser, async (req, res) => {
+  const users = await actions.getAllUsers();
+  res.json(users);
+});
 
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users/:id", verifyUser, async (req, res) => {
   const { id } = req.params;
-  await actions.deleteUser(id);
+  const user = await actions.findById(id);
+  if (!user) {
+    res.status(404).json({ message: "no user found" });
+    return;
+  }
+  // await actions.deleteUser(id);
+  console.log("delete user with id: ", id);
   res.json({ message: "user deleted" });
 });
 
@@ -70,7 +77,7 @@ app.post("/users/login", async (req, res) => {
         .json({ message: "wrong authentication credentials" });
     }
     const token = JWT.sign({}, secret, { expiresIn: 3600 });
-    res.status(201).json({ token, userId: user.id, username: user.username });
+    res.status(200).json({ token, userId: user.id, username: user.username });
   } catch (error) {
     res.json({ message: error.message });
   }

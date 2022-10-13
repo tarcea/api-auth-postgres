@@ -1,5 +1,5 @@
-const dotenv = require('dotenv');
-const { Pool } = require('pg');
+const dotenv = require("dotenv");
+const { Pool } = require("pg");
 
 dotenv.config();
 
@@ -14,7 +14,7 @@ pool.connect();
 
 module.exports = {
   query: async (text, params) => pool.query(text, params),
-  GET_ALL_USERS: 'SELECT * FROM users',
+  GET_ALL_USERS: "SELECT id, username, email FROM users",
   ADD_USER: `
   INSERT INTO users (username, email, password)
   VALUES ($1, $2, $3)
@@ -27,5 +27,5 @@ module.exports = {
     UPDATE users
     SET password = $1
     WHERE id = $2
-  `
-}
+  `,
+};

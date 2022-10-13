@@ -4,6 +4,7 @@ info:
   version: "1.0"
 servers:
   - url: https://auth-gt.herokuapp.com
+  - url: http://localhost:5050
 paths:
   /users/signup:
     post:
@@ -47,8 +48,8 @@ paths:
               $ref: "#/components/schemas/loginUserInput"
         required: true
       responses:
-        "201":
-          description: New user created
+        "200":
+          description: Logged in
           content:
             application/json:
               schema:
@@ -71,6 +72,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/loginUserError500"
+  /users/{id}:
+    delete:
+      security:
+        - bearerAuth: [authorization]
+      parameters:
+        - name: id
+          in: path
+          description: User ID
+          required: true
+          schema:
+            type: string
+        - name: authorization
+          in: header
+          description: an authorization header
+          required: true
+          schema:
+            type: string
+            example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUxOTEwODMsImV4cCI6MTY0NTE5NDY4M30.EmW-p8Jji8tJsk4loF-8gBrBuS1ZEOQ9ql-d0FzKd60
+      responses:
+        "200":
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/loginUserResponse"
 components:
   schemas:
     signupUserInput:
@@ -171,3 +197,10 @@ components:
         message:
           type: string
           example: some server related error
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+  - bearerAuth: []
