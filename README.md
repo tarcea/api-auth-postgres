@@ -8,4 +8,4 @@ Authentication and authorization with bcrypt and JWT
 
 ## API documentation
 
-- https://auth-gt.herokuapp.com/docs.html
+- https://auth-gt.up.railway.app/docs.html
