@@ -11,7 +11,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const sendMail = async (to, username, password) => {
-  await smtpTransport.sendMail(
+  await transporter.sendMail(
     {
       from: process.env.SMTP_FROM,
       to: to,
@@ -27,8 +27,6 @@ const sendMail = async (to, username, password) => {
       }
     }
   );
-  // console.log(sendResult)
 };
 
-// sendMail().catch(err => console.log(err))
 module.exports = { sendMail };
