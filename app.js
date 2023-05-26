@@ -20,6 +20,10 @@ app.get('/', (req, res) => {
       'https://excited-positive-soldier.glitch.me/docs.html',
       'https://auth-gt.up.railway.app/docs.html',
     ],
+    apiEndpoints: [
+      'https://excited-positive-soldier.glitch.me',
+      'https://auth-gt.up.railway.app',
+    ],
   });
 });
 app.get('/users', verifyUser, async (req, res) => {
