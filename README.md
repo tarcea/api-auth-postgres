@@ -8,4 +8,4 @@ Authentication and authorization with bcrypt and JWT
 
 ## API documentation
 
-- https://auth-gt.up.railway.app/docs.html
+- https://excited-positive-soldier.glitch.me/docs.html
