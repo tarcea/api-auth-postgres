@@ -1,9 +1,9 @@
-openapi: "3.0.2"
+openapi: '3.0.2'
 info:
   title: API auth
-  version: "1.0"
+  version: '1.0'
 servers:
-  - url: https://auth-gt.herokuapp.com
+  - url: https://excited-positive-soldier.glitch.me
   - url: http://localhost:5050
 paths:
   /users/signup:
@@ -12,66 +12,66 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/signupUserInput"
+              $ref: '#/components/schemas/signupUserInput'
         required: true
       responses:
-        "201":
+        '201':
           description: New user created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/signupUserResponse"
-        "400":
+                $ref: '#/components/schemas/signupUserResponse'
+        '400':
           description: not all input provided
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/signupUserError400"
-        "401":
+                $ref: '#/components/schemas/signupUserError400'
+        '401':
           description: no matching passwords
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/signupUserError401"
-        "500":
+                $ref: '#/components/schemas/signupUserError401'
+        '500':
           description: server errors
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/signupUserError500"
+                $ref: '#/components/schemas/signupUserError500'
   /users/login:
     post:
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/loginUserInput"
+              $ref: '#/components/schemas/loginUserInput'
         required: true
       responses:
-        "200":
+        '200':
           description: Logged in
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loginUserResponse"
-        "400":
+                $ref: '#/components/schemas/loginUserResponse'
+        '400':
           description: not all input provided
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loginUserError400"
-        "401":
+                $ref: '#/components/schemas/loginUserError400'
+        '401':
           description: no matching passwords
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loginUserError401"
-        "500":
+                $ref: '#/components/schemas/loginUserError401'
+        '500':
           description: server errors
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loginUserError500"
+                $ref: '#/components/schemas/loginUserError500'
   /users/{id}:
     delete:
       security:
@@ -91,12 +91,12 @@ paths:
             type: string
             example: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2NDUxOTEwODMsImV4cCI6MTY0NTE5NDY4M30.EmW-p8Jji8tJsk4loF-8gBrBuS1ZEOQ9ql-d0FzKd60
       responses:
-        "200":
+        '200':
           description: Successful operation
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/loginUserResponse"
+                $ref: '#/components/schemas/loginUserResponse'
 components:
   schemas:
     signupUserInput:
