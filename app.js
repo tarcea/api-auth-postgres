@@ -88,7 +88,7 @@ app.post('/users/login', async (req, res) => {
   }
 });
 
-app.post('/users/:id/change', async (req, res) => {
+app.post('/users/:id/change', verifyUser, async (req, res) => {
   try {
     const { id } = req.params;
     const { oldPassword, password, confirmPassword } = req.body;
