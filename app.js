@@ -16,7 +16,10 @@ app.use(cors());
 
 app.get('/', (req, res) => {
   res.json({
-    documentation: 'https://excited-positive-soldier.glitch.me/docs.html',
+    documentation: [
+      'https://excited-positive-soldier.glitch.me/docs.html',
+      'https://auth-gt.up.railway.app/docs.html',
+    ],
   });
 });
 app.get('/users', verifyUser, async (req, res) => {
