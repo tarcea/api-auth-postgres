@@ -4,6 +4,7 @@ info:
   version: '1.0'
 servers:
   - url: https://excited-positive-soldier.glitch.me
+  - url: https://auth-gt.up.railway.app
   - url: http://localhost:5050
 paths:
   /users/signup:
