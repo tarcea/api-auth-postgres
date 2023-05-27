@@ -38,7 +38,7 @@ app.delete('/users/:id', verifyUser, async (req, res) => {
     res.status(404).json({ message: 'no user found' });
     return;
   }
-  // await actions.deleteUser(id);
+  await actions.deleteUser(id);
   console.log('delete user with id: ', id);
   res.json({ message: 'user deleted' });
 });
