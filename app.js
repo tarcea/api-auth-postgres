@@ -1,10 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
-const JWT = require('jsonwebtoken');
 const cors = require('cors');
 const actions = require('./src/actions');
 const { sendMail } = require('./src/mailer');
-const { passwordGenerator } = require('./src/helpers');
+const { passwordGenerator, tokenGenerator } = require('./src/helpers');
 const verifyUser = require('./middlewares');
 
 const PORT = process.env.PORT || 5050;
@@ -34,10 +33,18 @@ app.get('/users', verifyUser, async (req, res) => {
 app.delete('/users/:id', verifyUser, async (req, res) => {
   const { id } = req.params;
   const user = await actions.findById(id);
+
   if (!user) {
     res.status(404).json({ message: 'no user found' });
     return;
   }
+  const { userId } = res.locals.decodedToken;
+
+  if (!user.admin && userId !== user.id) {
+    res.status(401).json({ message: 'unauthorized to delete the user' });
+    return;
+  }
+
   await actions.deleteUser(id);
   console.log('delete user with id: ', id);
   res.json({ message: 'user deleted' });
@@ -62,7 +69,7 @@ app.post('/users/signup', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     await actions.addUser(username, email, hashedPassword);
     const user = await actions.findByEmail(email);
-    const token = JWT.sign({}, secret, { expiresIn: 3600 });
+    const token = tokenGenerator(secret, 3600, user.id);
     res.status(201).json({ token, userId: user.id, username: user.username });
   } catch (error) {
     res.json({ message: error.message });
@@ -88,7 +95,7 @@ app.post('/users/login', async (req, res) => {
         .status(401)
         .json({ message: 'wrong authentication credentials' });
     }
-    const token = JWT.sign({}, secret, { expiresIn: 3600 });
+    const token = tokenGenerator(secret, 3600, user.id);
     res.status(200).json({ token, userId: user.id, username: user.username });
   } catch (error) {
     res.json({ message: error.message });

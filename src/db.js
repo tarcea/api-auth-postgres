@@ -1,5 +1,5 @@
-const dotenv = require("dotenv");
-const { Pool } = require("pg");
+const dotenv = require('dotenv');
+const { Pool } = require('pg');
 
 dotenv.config();
 
@@ -14,13 +14,13 @@ pool.connect();
 
 module.exports = {
   query: async (text, params) => pool.query(text, params),
-  GET_ALL_USERS: "SELECT id, username, email FROM users",
+  GET_ALL_USERS: 'SELECT id, username, email FROM users',
   ADD_USER: `
   INSERT INTO users (username, email, password)
   VALUES ($1, $2, $3)
   `,
   DELETE_USER: `DELETE FROM users WHERE id = $1`,
-  FIND_USER_BY_EMAIL: `SELECT * FROM users WHERE email = $1`,
+  FIND_USER_BY_EMAIL: `SELECT id, username, admin FROM users WHERE email = $1`,
   FIND_USER_BY_USERNAME: `SELECT * FROM users WHERE username = $1`,
   FIND_USER_BY_ID: `SELECT * FROM users WHERE id = $1`,
   CHANGE_PASSWORD: `
